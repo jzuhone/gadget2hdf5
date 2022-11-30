@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gadget2hdf5"
+description = ""
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "BSD 3-Clause License"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "numpy",
+    "h5py",
+]
+dynamic = ["version"]
+
+[project.scripts]
+convert_gadget_to_hdf5 = "gadget2hdf5.convert_to_hdf5:main"
