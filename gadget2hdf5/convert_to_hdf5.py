@@ -5,10 +5,10 @@ import numpy as np
 ptypes = [0, 1, 4, 5]
 
 
-def convert_to_hdf5(infile, pos_name="POS ", vel_name="VEL "):
+def convert_to_hdf5(infile, outfile=None, pos_name="POS ", vel_name="VEL "):
 
-    infile = "uid0_r3_large_snap_v2box_031"
-    outfile = f"{infile}.hdf5"
+    if outfile is None:
+        outfile = f"{infile}.hdf5"
 
     f = g3read.GadgetFile(infile)
 
@@ -77,12 +77,13 @@ def convert_to_hdf5(infile, pos_name="POS ", vel_name="VEL "):
             if not blk.ptypes[ptype]:
                 continue
             arr = f.read_new(name, ptype)
-            g = gs[i]
+            g = gs[ptype]
             if name == "Zs  ":
                 elem_size = arr.shape[1]
+                print(elem_size)
                 if "Flag_Metals" not in h.attrs:
                     h.attrs["Flag_Metals"] = elem_size
-                frac = arr / g["Masses"][()]
+                frac = arr / g["Masses"][()][:,np.newaxis]
                 g.create_dataset("Metallicity", data=frac[:, 1:].sum(axis=1))
                 if "H" not in elems[elem_size]:
                     g.create_dataset("H_fraction", data=1.0 - frac.sum(axis=1))
