@@ -72,6 +72,8 @@ def convert_to_hdf5(infile, outfile=None, pos_name="POS ", vel_name="VEL "):
 
     gs = {i: ff.create_group(f"PartType{i}") for i in ptypes}
 
+    print(f"blocks in file: {list(f.blocks.keys())}")
+    
     for name, blk in f.blocks.items():
         for ptype in ptypes:
             if not blk.ptypes[ptype]:
